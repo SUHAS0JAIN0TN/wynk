@@ -47,12 +47,22 @@ console.log(btn);
 //   });
 const expand = (e) =>{
     console.log(e,"sdaf");
-    let navmain = e
+    let navmain = e.target
     subav = navmain.querySelector(".navinside");
     console.log(subav.innerText);
     subav.classList.toggle("active");
     // console.log(subav.classList);
   }
+insidelistElements = document.getElementsByClassName("insidelist");
+
+for (var i = 0; i < insidelistElements.length; i++) {
+    insidelistElements[i].addEventListener('click', expand);
+}
+deleteSongElements = document.getElementsByClassName("delbtn");
+
+for (var i = 0; i < deleteSongElements.length; i++) {
+    deleteSongElements[i].addEventListener('click', songdel);
+}
 // navmain.addEventListener("click", (e) => {
 //   subav = document.querySelector(".navinside");
 //   subav.classList.toggle("active");
