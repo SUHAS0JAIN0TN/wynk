@@ -27,8 +27,11 @@
 //     // use `url` here inside the callback because it's asynchronous!
 // });
 const songdel = (el) =>{
-    console.log(el)
-    el.parentElement.remove()
+    console.log(el);
+    console.log(el.target);
+    el.target.parentElement.parentElement.remove();
+    el.stopPropagation();
+    
 }
 const btn = document.querySelector("#save");
 console.log(btn);
@@ -43,7 +46,7 @@ console.log(btn);
 //     // console.log(subav.classList);
 //   });
 const expand = (e) =>{
-    console.log(e);
+    console.log(e,"sdaf");
     let navmain = e
     subav = navmain.querySelector(".navinside");
     console.log(subav.innerText);
