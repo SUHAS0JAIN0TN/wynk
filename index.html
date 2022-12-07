@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Covid-19 Stats- UK</title>
+    <meta charset="utf-8" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    .navinside {
+      position: relative;
+      margin-left: 10px;
+    }
+    .nav > .insidelist {
+      margin: 10px;
+      position: relative;
+      display: block;
+    }
+    .nav div {
+      display: none;
+    }
+    .active {
+      display: block !important;
+    }
+    .navinside.active div {
+      display: block;
+    }
+  </style>
+  <body>
+    <nav>
+      <div class="nav row">
+        <div class="col-12 navMain insidelist" 
+                onclick="expand(this)">
+          home
+          <div class="navinside">
+            <div>
+              <div>inside home-1</div>
+              <div
+                style="width: 5px; height: 5px; background-color: blue"
+                onclick="songdel(this)"
+              ></div>
+            </div>
+            <div>
+              <div>inside home-2</div>
+              <div
+                style="width: 5px; height: 5px; background-color: blue"
+                onclick="songdel(this)"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 navMain insidelist" 
+                onclick="expand(this)">
+          about
+          <div class="navinside">
+            <div>
+              <div>inside about-1</div>
+              <div
+                style="width: 5px; height: 5px; background-color: blue"
+                onclick="songdel(this)"
+              ></div>
+            </div>
+            <div>
+              <div>inside about-2</div>
+              <div
+                style="width: 5px; height: 5px; background-color: blue"
+                onclick="songdel(this)"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 insidelist" 
+                onclick="expand(this)">contact</div>
+      </div>
+    </nav>
+    <button id="save" style="width: 150px" class="active">
+      store in local
+    </button>
+  </body>
+  <script src="script.js"></script>
+</html>
+
+<!-- <nav>
+    <div class="nav row">
+      <div class="col-12 navMain insidelist">
+        home
+        <div class="navinside">
+          <div>inside home-1</div>
+          <div>inside home-2</div>
+        </div>
+      </div>
+      <div class="col-12 navMain insidelist">
+        about
+        <div class="navinside">
+          <div>inside about-1</div>
+          <div>inside about-2</div>
+        </div>
+      </div>
+      <div class="col-12 insidelist">contact</div>
+    </div>
+  </nav> -->
