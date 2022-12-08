@@ -11,4 +11,9 @@ window.addEventListener("load", function () {
     "flex-grow text-right mr-4 flex justify-end sm:flex-1 h-full"
   )[0];
   playBar.insertBefore(addToPlayList, playBar.firstChild);
+  addToPlayList.addEventListener("click", () => {
+    let divv = document.createElement("div");
+    addToPlayList.appendChild(divv)
+    console.log(divv);
+  })
 });

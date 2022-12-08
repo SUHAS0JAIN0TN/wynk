@@ -26,13 +26,34 @@
 //     console.log(url);
 //     // use `url` here inside the callback because it's asynchronous!
 // });
-const songdel = (el) =>{
-    console.log(el);
-    console.log(el.target);
-    el.target.parentElement.parentElement.remove();
-    el.stopPropagation();
-    
-}
+create_playlist = () => {
+  playlist_temp = document.createElement("div");
+  playlist_temp.className = "col-12 navMain insidelist";
+  playlist_temp.appendChild(document.createElement("span"));
+  song_te = document.createElement("div");
+  song_te.className = "navinside";
+  playlist_temp.appendChild(song_te);
+  return playlist_temp;
+};
+create_song = () => {
+  song_temp = document.createElement("div");
+  song_temp.className = "song";
+  song_temp.appendChild(document.createElement("div"));
+  del_div = document.createElement("div");
+  del_img = document.createElement("img");
+  del_img.className = "delbtn";
+  del_img.src =
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAZUlEQVRIiWNgGCmggYGB4T8a7iBGIyMWsf8UOgbFTCYKDSMbwIKBYvU09wGxFqC7kGgfDhofjFowasGoBRQAFiLVoRfr2Ip5rGDAgugplEavxXBhZD1EAT8GBoYnJFjwBKpnGAIAUcAmPA1WYN0AAAAASUVORK5CYII=";
+  del_div.appendChild(del_img);
+  song_temp.appendChild(del_div);
+  return song_temp;
+};
+const songdel = (el) => {
+  console.log(el);
+  console.log(el.target);
+  el.target.parentElement.parentElement.remove();
+  el.stopPropagation();
+};
 const btn = document.querySelector("#save");
 console.log(btn);
 // let subav = document.querySelector(".navinside");
@@ -45,23 +66,23 @@ console.log(btn);
 //     subav.classList.toggle("active");
 //     // console.log(subav.classList);
 //   });
-const expand = (e) =>{
-    console.log(e,"sdaf");
-    let navmain = e.target
-    subav = navmain.querySelector(".navinside");
-    console.log(subav.innerText);
-    subav.classList.toggle("active");
-    // console.log(subav.classList);
-  }
+const expand = (e) => {
+  console.log(e, "sdaf");
+  let navmain = e.target.parentElement;
+  subav = navmain.querySelector(".navinside");
+  console.log(subav.innerText);
+  subav.classList.toggle("active");
+  // console.log(subav.classList);
+};
 insidelistElements = document.getElementsByClassName("insidelist");
 
 for (var i = 0; i < insidelistElements.length; i++) {
-    insidelistElements[i].addEventListener('click', expand);
+  insidelistElements[i].addEventListener("click", expand);
 }
 deleteSongElements = document.getElementsByClassName("delbtn");
 
 for (var i = 0; i < deleteSongElements.length; i++) {
-    deleteSongElements[i].addEventListener('click', songdel);
+  deleteSongElements[i].addEventListener("click", songdel);
 }
 // navmain.addEventListener("click", (e) => {
 //   subav = document.querySelector(".navinside");
