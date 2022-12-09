@@ -1,23 +1,27 @@
 {
-    "name": "WYNK playlist",
-    "version": "3.0.0",
-    "description": "WYNK playlist description",
-    "manifest_version": 3,
-    "author": "Suhas Jain",
-    "permissions": [
-        "storage",
-        "tabs"
-      ],
-    "content_scripts":[
+  "name": "WYNK playlist",
+  "version": "3.0.0",
+  "description": "WYNK playlist description",
+  "manifest_version": 3,
+  "author": "Suhas Jain",
+  "permissions": ["storage", "tabs"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
     {
-        "matches":[
-        "https://wynk.in/*"
-        ],
-        "js": ["content.js"]
+      "matches": ["https://wynk.in/*"],
+      "js": ["content.js"]
     }
-    ],
-    "action":{
-        "default_popup": "index.html",
-        "default_title": "WYNK playlist"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["inject-script.js"],
+      "matches": ["https://wynk.in/*"]
     }
+  ],
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "WYNK playlist"
+  }
 }
