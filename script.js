@@ -1,4 +1,4 @@
-create_playlist = () => {
+const create_playlist = () => {
   playlist_temp = document.createElement("div");
   playlist_temp.className = "col-12 navMain insidelist";
   playlist_temp.appendChild(document.createElement("span"));
@@ -7,7 +7,7 @@ create_playlist = () => {
   playlist_temp.appendChild(song_te);
   return playlist_temp;
 };
-create_song = () => {
+const create_song = () => {
   song_temp = document.createElement("div");
   song_temp.className = "song";
   song_temp.appendChild(document.createElement("div"));
