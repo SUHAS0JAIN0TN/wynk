@@ -1,7 +1,9 @@
-const create_playlist = () => {
+const create_playlist = (playlist_name) => {
   playlist_temp = document.createElement("div");
   playlist_temp.className = "col-12 navMain insidelist";
-  playlist_temp.appendChild(document.createElement("span"));
+  span_el = document.createElement("span");
+  span_el.innerText = playlist_name;
+  playlist_temp.appendChild(span_el);
   song_te = document.createElement("div");
   song_te.className = "navinside";
   playlist_temp.appendChild(song_te);
@@ -71,4 +73,30 @@ btn.addEventListener("click", function () {
     }
   });
   console.log(localStorage["playlists"]);
+});
+
+const getPlaylistNames = async () => {
+  var res = chrome.storage.sync.get(null).then(function (items) {
+    var allKeys = Object.keys(items);
+    return allKeys;
+  });
+  return res;
+};
+const getPlaylistSongs = async (playlistName) => {
+  var res = chrome.storage.sync.get(playlistName).then(function (items) {
+    // var allKeys = Object.keys(items);
+    return items;
+  });
+  return res;
+};
+window.addEventListener("load", async function () {
+  all_data = await getPlaylistSongs();
+  playlists = Object.keys(all_data);
+  console.log(playlists);
+  container = document.getElementsByClassName("nav row")[0];
+  for(let i=0;i<playlists.length; i++){
+    temp_play = create_playlist(playlists[i]);
+    container.appendChild(temp_play);
+
+  }
 });
