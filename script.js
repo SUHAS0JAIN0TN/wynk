@@ -9,13 +9,17 @@ const create_playlist = (playlist_name) => {
   playlist_temp.appendChild(song_te);
   return playlist_temp;
 };
-const create_song = () => {
+const create_song = (arra) => {
   song_temp = document.createElement("div");
   song_temp.className = "song";
-  song_temp.appendChild(document.createElement("div"));
+  song_name_div = document.createElement("div")
+  song_name_div.innerText = arra[1];
+  song_name_div.setAttribute("link",arra[0]);
+  song_temp.appendChild(song_name_div);
   del_div = document.createElement("div");
   del_img = document.createElement("img");
   del_img.className = "delbtn";
+  del_img.addEventListener("click", songdel);
   del_img.src =
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAZUlEQVRIiWNgGCmggYGB4T8a7iBGIyMWsf8UOgbFTCYKDSMbwIKBYvU09wGxFqC7kGgfDhofjFowasGoBRQAFiLVoRfr2Ip5rGDAgugplEavxXBhZD1EAT8GBoYnJFjwBKpnGAIAUcAmPA1WYN0AAAAASUVORK5CYII=";
   del_div.appendChild(del_img);
@@ -25,6 +29,9 @@ const create_song = () => {
 const songdel = (el) => {
   console.log(el);
   console.log(el.target);
+  song_ind = el.target.parentElement.parentElement.getAttribute('ind');
+  playlist = el.target.parentElement.parentElement.getAttribute('playlist');
+  console.log(song_ind, playlist);
   el.target.parentElement.parentElement.remove();
   el.stopPropagation();
 };
@@ -96,7 +103,18 @@ window.addEventListener("load", async function () {
   container = document.getElementsByClassName("nav row")[0];
   for(let i=0;i<playlists.length; i++){
     temp_play = create_playlist(playlists[i]);
+    temp_play.addEventListener("click", expand);
     container.appendChild(temp_play);
+    insertion_div = temp_play.getElementsByClassName("navinside")[0];
+    console.log(insertion_div);
+    all_songs = JSON.parse(all_data[playlists[i]]);
+    console.log(all_songs);
+    for(let j=0;j<all_songs.length;j++){
+      song_div = create_song(all_songs[j]);
+      song_div.setAttribute("ind",j);
+      song_div.setAttribute("playlist",playlists[i]);
+      insertion_div.appendChild(song_div);
+    }
 
   }
 });
