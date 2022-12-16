@@ -52,41 +52,84 @@ const get_all_storage = async () => {
   return res;
 }
 
-window.addEventListener("load", async function () {
-  console.log(await get_all_storage());
-  // clear_storage();
-  addToPlayListDiv = document.createElement("div");
-  addToPlayList = document.createElement("span");
+// window.addEventListener("load", async function () {
+//   console.log(await get_all_storage());
+//   // clear_storage();
+//   addToPlayListDiv = document.createElement("div");
+//   addToPlayList = document.createElement("span");
 
-  addToPlayList.innerHTML = "+";
-  addToPlayList.style.cssText =
-    "cursor: pointer; color: rgb(255, 255, 255);font-size: 45px; display: flex; align-items: center;margin-right: 10px;position:relative";
+//   addToPlayList.innerHTML = "+";
+//   addToPlayList.style.cssText =
+//     "cursor: pointer; color: rgb(255, 255, 255);font-size: 45px; display: flex; align-items: center;margin-right: 10px;position:relative";
 
-  addToPlayListDiv.appendChild(addToPlayList);
+//   addToPlayListDiv.appendChild(addToPlayList);
+//   playBar = document.getElementsByClassName(
+//     "flex-grow text-right mr-4 flex justify-end sm:flex-1 h-full"
+//   )[0];
+//   playBar.insertBefore(addToPlayList, playBar.firstChild);
+//   addToPlayList.addEventListener("click", async (e) => {
+//     e.stopPropagation();
+//     if (addToPlayList.getElementsByTagName("div")[0] != undefined) {
+//       remove_playlist_display();
+//     } else {
+//       let divv = document.createElement("div");
+//       divv.style.cssText =
+//         "cursor: pointer; background:#fff; color:#000; padding:10px; font-size:15px; margin:5px auto; position:absolute; bottom:80px; right: -32px; width: 100px; text-align:left";
+//       var playlist_data = await getPlaylistNames();
+//       for (i = 0; i < playlist_data.length; i++) {
+//         tem_ = document.createElement("div");
+//         tem_.innerHTML = playlist_data[i];
+//         tem_.addEventListener("click", add_song_to_playlist);
+//         divv.appendChild(tem_);
+//       }
+//       tem_ = document.createElement("div");
+//       tem_.innerHTML = "Add Playlist";
+//       tem_.addEventListener("click", create_playlist);
+//       divv.appendChild(tem_);
+//       addToPlayList.appendChild(divv);
+//     }
+//   });
+// });
+
+
+chrome.runtime.onMessage.addListener((obj, sender, response) => {
+  console.log(obj, "fhgfc");
   playBar = document.getElementsByClassName(
     "flex-grow text-right mr-4 flex justify-end sm:flex-1 h-full"
   )[0];
-  playBar.insertBefore(addToPlayList, playBar.firstChild);
-  addToPlayList.addEventListener("click", async (e) => {
-    e.stopPropagation();
-    if (addToPlayList.getElementsByTagName("div")[0] != undefined) {
-      remove_playlist_display();
-    } else {
-      let divv = document.createElement("div");
-      divv.style.cssText =
-        "cursor: pointer; background:#fff; color:#000; padding:10px; font-size:15px; margin:5px auto; position:absolute; bottom:80px; right: -32px; width: 100px; text-align:left";
-      var playlist_data = await getPlaylistNames();
-      for (i = 0; i < playlist_data.length; i++) {
+  // console.log(await get_all_storage());
+  // clear_storage();
+  if (playBar.firstChild.tagName.toLowerCase() != 'span') {
+    addToPlayListDiv = document.createElement("div");
+    addToPlayList = document.createElement("span");
+
+    addToPlayList.innerHTML = "+";
+    addToPlayList.style.cssText =
+      "cursor: pointer; color: rgb(255, 255, 255);font-size: 45px; display: flex; align-items: center;margin-right: 10px;position:relative";
+
+    addToPlayListDiv.appendChild(addToPlayList);
+    playBar.insertBefore(addToPlayList, playBar.firstChild);
+    addToPlayList.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      if (addToPlayList.getElementsByTagName("div")[0] != undefined) {
+        remove_playlist_display();
+      } else {
+        let divv = document.createElement("div");
+        divv.style.cssText =
+          "cursor: pointer; background:#fff; color:#000; padding:10px; font-size:15px; margin:5px auto; position:absolute; bottom:80px; right: -32px; width: 100px; text-align:left";
+        var playlist_data = await getPlaylistNames();
+        for (i = 0; i < playlist_data.length; i++) {
+          tem_ = document.createElement("div");
+          tem_.innerHTML = playlist_data[i];
+          tem_.addEventListener("click", add_song_to_playlist);
+          divv.appendChild(tem_);
+        }
         tem_ = document.createElement("div");
-        tem_.innerHTML = playlist_data[i];
-        tem_.addEventListener("click", add_song_to_playlist);
+        tem_.innerHTML = "Add Playlist";
+        tem_.addEventListener("click", create_playlist);
         divv.appendChild(tem_);
+        addToPlayList.appendChild(divv);
       }
-      tem_ = document.createElement("div");
-      tem_.innerHTML = "Add Playlist";
-      tem_.addEventListener("click", create_playlist);
-      divv.appendChild(tem_);
-      addToPlayList.appendChild(divv);
-    }
-  });
+    });
+  }
 });

@@ -1,4 +1,11 @@
-const create_playlist = (playlist_name) => {
+async function getActiveTabURL() {
+  const tabs = await chrome.tabs.query({
+      currentWindow: true,
+      active: true
+  });
+
+  return tabs[0];
+}const create_playlist = (playlist_name) => {
   playlist_temp = document.createElement("div");
   playlist_temp.className = "col-12 navMain insidelist";
   span_el = document.createElement("span");
@@ -26,14 +33,21 @@ const create_song = (arra) => {
   song_temp.appendChild(del_div);
   return song_temp;
 };
-const songdel = (el) => {
+const songdel = async (el) => {
+  el.stopPropagation();
   console.log(el);
   console.log(el.target);
   song_ind = el.target.parentElement.parentElement.getAttribute('ind');
   playlist = el.target.parentElement.parentElement.getAttribute('playlist');
   console.log(song_ind, playlist);
   el.target.parentElement.parentElement.remove();
-  el.stopPropagation();
+  all_data = await getPlaylistSongs();
+  console.log(all_data[playlist]);
+  songs_in_playlist = JSON.parse(all_data[playlist]);
+  console.log(songs_in_playlist);
+  songs_in_playlist.splice(song_ind, 1);
+  console.log(songs_in_playlist);
+  chrome.storage.sync.set({[playlist]:JSON.stringify(songs_in_playlist)});
 };
 const btn = document.querySelector("#save");
 
@@ -97,10 +111,12 @@ const getPlaylistSongs = async (playlistName) => {
   return res;
 };
 window.addEventListener("load", async function () {
+  const activeTab = await getActiveTabURL();
+  container = document.getElementsByClassName("nav row")[0];
+  if (activeTab.url.includes("wynk.in/")){
   all_data = await getPlaylistSongs();
   playlists = Object.keys(all_data);
   console.log(playlists);
-  container = document.getElementsByClassName("nav row")[0];
   for(let i=0;i<playlists.length; i++){
     temp_play = create_playlist(playlists[i]);
     temp_play.addEventListener("click", expand);
@@ -116,5 +132,8 @@ window.addEventListener("load", async function () {
       insertion_div.appendChild(song_div);
     }
 
+  }}
+  else{
+    container.innerText = "This is not the page";
   }
 });

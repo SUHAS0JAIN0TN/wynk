@@ -1,11 +1,13 @@
-chrome.tabs.onUpdated.addListener((tabId, tab) => {
-  if (tab.url && tab.url.includes("wynk.in/*")) {
-    const queryParameters = tab.url.split("?")[1];
-    const urlParameters = new URLSearchParams(queryParameters);
-
+chrome.tabs.onUpdated.addListener((tabId, obj, tab) => {
+  console.log(tab.url,tabId);
+  if (tab.url && tab.url.includes("wynk.in/")) {
+    console.log(tabId);
     chrome.tabs.sendMessage(tabId, {
       type: "NEW",
-      videoId: urlParameters.get("v"),
+    }).then(function (items) {
+      // var allKeys = Object.keys(items);
+      console.log(items);
+      // return items;
     });
   }
 });
