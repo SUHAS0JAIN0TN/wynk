@@ -1,11 +1,12 @@
 async function getActiveTabURL() {
   const tabs = await chrome.tabs.query({
-      currentWindow: true,
-      active: true
+    currentWindow: true,
+    active: true,
   });
 
   return tabs[0];
-}const create_playlist = (playlist_name) => {
+}
+const create_playlist = (playlist_name) => {
   playlist_temp = document.createElement("div");
   playlist_temp.className = "col-12 navMain insidelist";
   span_el = document.createElement("span");
@@ -16,12 +17,55 @@ async function getActiveTabURL() {
   playlist_temp.appendChild(song_te);
   return playlist_temp;
 };
+
+const play_song = async (el) => {
+  el.stopPropagation();
+  console.log(window.onbeforeunload, "llll", );
+  window.onbeforeunload = null;
+  el.preventDefault();
+  const activeTab = await getActiveTabURL();
+  // chrome.tabs.sendMessage(activeTab.id, {
+  //   type :"PLAY",
+  //   url : el.target.getAttribute("link"),
+  // });
+  // chrome.tabs.sendMessage(tab.id, {type :"STOP",});
+
+  chrome.tabs.update(activeTab.id, {
+      url: "https://wynk.in"+el.target.getAttribute("link")
+  }, function (tab) {el.stopImmediatePropagation();
+    console.log(window.onbeforeunload, "kkkkkkkk", tab);
+      chrome.tabs.onUpdated.addListener(function listener (tabId, info) {
+        console.log(window.onbeforeunload, "nnnnnnnnnnnnnnnnnnn", tab);
+          if (info.status === 'loading' && tabId === tab.id) {
+            // chrome.tabs.onUpdated.removeListener(listener);
+            // chrome.tabs.sendMessage(tab.id, {type :"PLAY",});
+            console.log(window.onbeforeunload, "oooooooooooooooo", tab);
+          }
+          if (info.status === 'complete' && tabId === tab.id) {
+              chrome.tabs.onUpdated.removeListener(listener);
+              chrome.tabs.sendMessage(tab.id, {type :"PLAY",});
+              console.log(window.onbeforeunload, "mmmmmmmmmmmmmm", tab);
+          }
+      });
+  });
+
+
+
+  
+  // chrome.tabs.update(activeTab.id,{
+  //   url: "https://wynk.in"+el.target.getAttribute("link")+"?ssss=aaaa",
+  // },()=>{console.log("reached"); chrome.tabs.sendMessage(activeTab.id, {
+  //   type :"PLAY",
+  //   url : el.target.getAttribute("link"),
+  // }).then(()=>{console.log("sasasasasasasasass");})});
+}
 const create_song = (arra) => {
   song_temp = document.createElement("div");
   song_temp.className = "song";
-  song_name_div = document.createElement("div")
+  song_name_div = document.createElement("div");
+  song_name_div.addEventListener("click", play_song);
   song_name_div.innerText = arra[1];
-  song_name_div.setAttribute("link",arra[0]);
+  song_name_div.setAttribute("link", arra[0]);
   song_temp.appendChild(song_name_div);
   del_div = document.createElement("div");
   del_img = document.createElement("img");
@@ -35,10 +79,10 @@ const create_song = (arra) => {
 };
 const songdel = async (el) => {
   el.stopPropagation();
-  console.log(el);
-  console.log(el.target);
-  song_ind = el.target.parentElement.parentElement.getAttribute('ind');
-  playlist = el.target.parentElement.parentElement.getAttribute('playlist');
+  // console.log(el);
+  // console.log(el.target);
+  song_ind = el.target.parentElement.parentElement.getAttribute("ind");
+  playlist = el.target.parentElement.parentElement.getAttribute("playlist");
   console.log(song_ind, playlist);
   el.target.parentElement.parentElement.remove();
   all_data = await getPlaylistSongs();
@@ -47,54 +91,54 @@ const songdel = async (el) => {
   console.log(songs_in_playlist);
   songs_in_playlist.splice(song_ind, 1);
   console.log(songs_in_playlist);
-  chrome.storage.sync.set({[playlist]:JSON.stringify(songs_in_playlist)});
+  chrome.storage.sync.set({ [playlist]: JSON.stringify(songs_in_playlist) });
 };
 const btn = document.querySelector("#save");
 
 const expand = (e) => {
-  console.log(e, "sdaf");
+  // console.log(e, "sdaf");
   let navmain = e.target.parentElement;
   subav = navmain.querySelector(".navinside");
-  console.log(subav.innerText);
+  // console.log(subav.innerText);
   subav.classList.toggle("active");
   // console.log(subav.classList);
 };
-insidelistElements = document.getElementsByClassName("insidelist");
+// insidelistElements = document.getElementsByClassName("insidelist");
 
-for (var i = 0; i < insidelistElements.length; i++) {
-  insidelistElements[i].addEventListener("click", expand);
-}
-deleteSongElements = document.getElementsByClassName("delbtn");
+// for (var i = 0; i < insidelistElements.length; i++) {
+//   insidelistElements[i].addEventListener("click", expand);
+// }
+// deleteSongElements = document.getElementsByClassName("delbtn");
 
-for (var i = 0; i < deleteSongElements.length; i++) {
-  deleteSongElements[i].addEventListener("click", songdel);
-}
-btn.addEventListener("click", function () {
-  chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-    console.log(tabs[0]);
-    let url = tabs[0].url;
-    if (!localStorage.getItem("playlists")) {
-      tem = [url];
-      console.log(tem);
-      tem = JSON.stringify(tem);
-      console.log(tem);
-      localStorage["playlists"] = tem;
-    } else {
-      console.log(45);
-      tem = localStorage["playlists"];
-      console.log(tem);
-      tem = JSON.parse(tem);
-      console.log(tem);
-      tem.push(url);
-      console.log(tem);
-      tem = JSON.stringify(tem);
-      console.log(tem);
+// for (var i = 0; i < deleteSongElements.length; i++) {
+//   deleteSongElements[i].addEventListener("click", songdel);
+// }
+// btn.addEventListener("click", function () {
+//   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+//     console.log(tabs[0]);
+//     let url = tabs[0].url;
+//     if (!localStorage.getItem("playlists")) {
+//       tem = [url];
+//       console.log(tem);
+//       tem = JSON.stringify(tem);
+//       console.log(tem);
+//       localStorage["playlists"] = tem;
+//     } else {
+//       console.log(45);
+//       tem = localStorage["playlists"];
+//       console.log(tem);
+//       tem = JSON.parse(tem);
+//       console.log(tem);
+//       tem.push(url);
+//       console.log(tem);
+//       tem = JSON.stringify(tem);
+//       console.log(tem);
 
-      localStorage["playlists"] = tem;
-    }
-  });
-  console.log(localStorage["playlists"]);
-});
+//       localStorage["playlists"] = tem;
+//     }
+//   });
+//   console.log(localStorage["playlists"]);
+// });
 
 const getPlaylistNames = async () => {
   var res = chrome.storage.sync.get(null).then(function (items) {
@@ -113,27 +157,26 @@ const getPlaylistSongs = async (playlistName) => {
 window.addEventListener("load", async function () {
   const activeTab = await getActiveTabURL();
   container = document.getElementsByClassName("nav row")[0];
-  if (activeTab.url.includes("wynk.in/")){
-  all_data = await getPlaylistSongs();
-  playlists = Object.keys(all_data);
-  console.log(playlists);
-  for(let i=0;i<playlists.length; i++){
-    temp_play = create_playlist(playlists[i]);
-    temp_play.addEventListener("click", expand);
-    container.appendChild(temp_play);
-    insertion_div = temp_play.getElementsByClassName("navinside")[0];
-    console.log(insertion_div);
-    all_songs = JSON.parse(all_data[playlists[i]]);
-    console.log(all_songs);
-    for(let j=0;j<all_songs.length;j++){
-      song_div = create_song(all_songs[j]);
-      song_div.setAttribute("ind",j);
-      song_div.setAttribute("playlist",playlists[i]);
-      insertion_div.appendChild(song_div);
+  if (activeTab.url.includes("wynk.in/")) {
+    all_data = await getPlaylistSongs();
+    playlists = Object.keys(all_data);
+    console.log(playlists);
+    for (let i = 0; i < playlists.length; i++) {
+      temp_play = create_playlist(playlists[i]);
+      temp_play.addEventListener("click", expand);
+      container.appendChild(temp_play);
+      insertion_div = temp_play.getElementsByClassName("navinside")[0];
+      console.log(insertion_div);
+      all_songs = JSON.parse(all_data[playlists[i]]);
+      console.log(all_songs);
+      for (let j = 0; j < all_songs.length; j++) {
+        song_div = create_song(all_songs[j]);
+        song_div.setAttribute("ind", j);
+        song_div.setAttribute("playlist", playlists[i]);
+        insertion_div.appendChild(song_div);
+      }
     }
-
-  }}
-  else{
+  } else {
     container.innerText = "This is not the page";
   }
 });
