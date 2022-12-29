@@ -122,7 +122,7 @@ chrome.runtime.onMessage.addListener((obj, sender, response) => {
   }
   // console.log(await get_all_storage());
   // clear_storage();
-  if (obj["type"] == "NEW" /*|| obj["type"] == "PLAY"*/) {
+  if (obj["type"] == "NEW") {
     if (playBar.firstChild.tagName.toLowerCase() != "span") {
       addToPlayListDiv = document.createElement("div");
       addToPlayList = document.createElement("span");
@@ -157,11 +157,4 @@ chrome.runtime.onMessage.addListener((obj, sender, response) => {
       });
     }
   }
-  // else if (obj["type"] == "PLAY") {
-  //   // console.log(obj, "gggggg");
-  //   // window.location.replace(obj.url);
-  //   window.addEventListener("load",() => {
-  //     console.log("after reload");});
-  //   // chrome.tabs.update()
-  // }
 });

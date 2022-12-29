@@ -79,8 +79,6 @@ const create_song = (arra) => {
 };
 const songdel = async (el) => {
   el.stopPropagation();
-  // console.log(el);
-  // console.log(el.target);
   song_ind = el.target.parentElement.parentElement.getAttribute("ind");
   playlist = el.target.parentElement.parentElement.getAttribute("playlist");
   console.log(song_ind, playlist);
@@ -96,49 +94,10 @@ const songdel = async (el) => {
 const btn = document.querySelector("#save");
 
 const expand = (e) => {
-  // console.log(e, "sdaf");
   let navmain = e.target.parentElement;
   subav = navmain.querySelector(".navinside");
-  // console.log(subav.innerText);
   subav.classList.toggle("active");
-  // console.log(subav.classList);
 };
-// insidelistElements = document.getElementsByClassName("insidelist");
-
-// for (var i = 0; i < insidelistElements.length; i++) {
-//   insidelistElements[i].addEventListener("click", expand);
-// }
-// deleteSongElements = document.getElementsByClassName("delbtn");
-
-// for (var i = 0; i < deleteSongElements.length; i++) {
-//   deleteSongElements[i].addEventListener("click", songdel);
-// }
-// btn.addEventListener("click", function () {
-//   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-//     console.log(tabs[0]);
-//     let url = tabs[0].url;
-//     if (!localStorage.getItem("playlists")) {
-//       tem = [url];
-//       console.log(tem);
-//       tem = JSON.stringify(tem);
-//       console.log(tem);
-//       localStorage["playlists"] = tem;
-//     } else {
-//       console.log(45);
-//       tem = localStorage["playlists"];
-//       console.log(tem);
-//       tem = JSON.parse(tem);
-//       console.log(tem);
-//       tem.push(url);
-//       console.log(tem);
-//       tem = JSON.stringify(tem);
-//       console.log(tem);
-
-//       localStorage["playlists"] = tem;
-//     }
-//   });
-//   console.log(localStorage["playlists"]);
-// });
 
 const getPlaylistNames = async () => {
   var res = chrome.storage.sync.get(null).then(function (items) {
