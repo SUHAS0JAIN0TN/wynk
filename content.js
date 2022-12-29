@@ -18,11 +18,9 @@ const add_song_to_playlist = async (e) => {
     "fixed bottom-0 w-full items-center h-20 xl:w-10/12 m-auto left-0 right-0 rounded border-none z-50"
   )[0].firstChild.firstChild.childNodes[1].firstChild;
   playlist_name = e.target.innerText;
-  console.log(player, playlist_name);
   var link = player.getAttribute("href");
   var name = player.getAttribute("title");
   songs = await getPlaylistSongs(playlist_name);
-  console.log(songs);
   songs = JSON.parse(songs[playlist_name]);
   songs.push([link, name]);
   chrome.storage.sync.set({ [playlist_name]: JSON.stringify(songs) });
@@ -94,13 +92,10 @@ const get_all_storage = async () => {
 // });
 
 chrome.runtime.onMessage.addListener((obj, sender, response) => {
-  console.log(obj, "fhgfc");
   play_pause_btn = document.getElementsByClassName("text-sm btn-primary text-white min-w-[111px] text-center h-[40px] md:h-auto")[0]
-  console.log(play_pause_btn);
   if (obj["type"] == "PLAY" ){
     
     play_pause_btn = document.getElementsByClassName("text-sm btn-primary text-white min-w-[111px] text-center h-[40px] md:h-auto")[0]
-    console.log(play_pause_btn, play_pause_btn.innerText);
     if ('Play Now' == play_pause_btn.innerText){
       play_pause_btn.click();
     }
@@ -114,7 +109,6 @@ chrome.runtime.onMessage.addListener((obj, sender, response) => {
     
     whole_paybar = playBar.parentElement
     play_pause_btn = whole_paybar.getElementsByTagName("button")[0]
-    console.log(play_pause_btn, play_pause_btn.innerText,"gandu");
     if ('Pause' == play_pause_btn.title){
       play_pause_btn.click();
     }

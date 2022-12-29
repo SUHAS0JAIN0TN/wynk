@@ -20,51 +20,24 @@ const create_playlist = (playlist_name) => {
 
 const play_song = async (el) => {
   el.stopPropagation();
-  console.log(window.onbeforeunload, "llll");
-  window.onbeforeunload = null;
-  el.preventDefault();
   const activeTab = await getActiveTabURL();
-  // chrome.tabs.sendMessage(activeTab.id, {
-  //   type :"PLAY",
-  //   url : el.target.getAttribute("link"),
-  // });
   console.log("before stop");
-  chrome.tabs.sendMessage(activeTab.id, { type: "STOP" }, function (e) {
-    console.log(e);
-    console.log("after stopfsd");
+  chrome.tabs.sendMessage(activeTab.id, { type: "STOP" }, function () {
     chrome.tabs.update(
       activeTab.id,
       {
         url: "https://wynk.in" + el.target.getAttribute("link"),
       },
       function (tab) {
-        console.log(window.onbeforeunload, "kkkkkkkk", tab);
         chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
-          console.log(window.onbeforeunload, "nnnnnnnnnnnnnnnnnnn", tab);
-          if (info.status === "loading" && tabId === tab.id) {
-            // chrome.tabs.onUpdated.removeListener(listener);
-            // chrome.tabs.sendMessage(tab.id, {type :"PLAY",});
-            console.log(window.onbeforeunload, "oooooooooooooooo", tab);
-          }
           if (info.status === "complete" && tabId === tab.id) {
             chrome.tabs.onUpdated.removeListener(listener);
             chrome.tabs.sendMessage(tab.id, { type: "PLAY" });
-            console.log(window.onbeforeunload, "mmmmmmmmmmmmmm", tab);
           }
         });
       }
     );
   });
-  console.log("after stop");
-
-  
-
-  // chrome.tabs.update(activeTab.id,{
-  //   url: "https://wynk.in"+el.target.getAttribute("link")+"?ssss=aaaa",
-  // },()=>{console.log("reached"); chrome.tabs.sendMessage(activeTab.id, {
-  //   type :"PLAY",
-  //   url : el.target.getAttribute("link"),
-  // }).then(()=>{console.log("sasasasasasasasass");})});
 };
 const create_song = (arra) => {
   song_temp = document.createElement("div");
