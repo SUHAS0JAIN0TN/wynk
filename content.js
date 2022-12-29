@@ -114,7 +114,7 @@ chrome.runtime.onMessage.addListener((obj, sender, response) => {
     
     whole_paybar = playBar.parentElement
     play_pause_btn = whole_paybar.getElementsByTagName("button")[0]
-    console.log(play_pause_btn, play_pause_btn.innerText);
+    console.log(play_pause_btn, play_pause_btn.innerText,"gandu");
     if ('Pause' == play_pause_btn.title){
       play_pause_btn.click();
     }
